@@ -1,0 +1,478 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"> 
+	<head> 
+	<title>Bomo</title> 
+
+	<link rel="stylesheet" href="css/jquery.mobile-1.0a2.min.css" />
+	<link rel="stylesheet" href="css/colors.css">
+	<link rel="stylesheet" href="css/widget_style.css" />
+	<script src="js/cordova-2.1.0.js"></script>
+	<script src="js/jquery-1.8.2.min.js"></script>
+	<script src="js/jquery.mobile-1.0a2.min.js"></script>
+	<script type="text/javascript" src="js/webwidget_slideshow_previousnext.js"></script>
+
+</head> 
+<body> 
+
+<!-- Page starts here -->
+<div data-role="page" data-theme="a" id="homepage">
+
+	<div data-role="header" id="hdrMain" name="hdrMain" data-nobackbtn="true">
+		<h1>Bomo</h1>
+	</div>
+
+	<div data-role="content" id="contentMain" name="contentMain">	
+		
+		<div id="webwidget_slideshow_previousnext" class="webwidget_slideshow_previousnext">
+            <ul>
+                <li><a  title="link1" id="link1"  onclick="openExternal(this.href, false);"><img src="css/images/img1.jpg"  alt="image1" id="img1"/></a></li>
+                <li><a  title="link2" id="link2"  onclick="openExternal(this.href, false);"><img src="css/images/img2.jpg"  alt="image2" id="img2"/></a></li>
+                <li><a  title="link3" id="link3"  onclick="openExternal(this.href, false);"><img src="css/images/img3.jpg"  alt="image3" id="img3"/></a></li>
+                <li><a  title="link4" id="link4"  onclick="openExternal(this.href, false);"><img src="css/images/img4.jpg"  alt="image4" id="img4"/></a></li>
+				<li><a  title="link5" id="link5"  onclick="openExternal(this.href, false);"><img src="css/images/img5.jpg"  alt="image5" id="img5"/></a></li>
+                <li><a  title="link6" id="link6"  onclick="openExternal(this.href, false);"><img src="css/images/img6.jpg"  alt="image6" id="img6"/></a></li>
+                <li><a  title="link7" id="link7"  onclick="openExternal(this.href, false);"><img src="css/images/img7.jpg"  alt="image7" id="img7"/></a></li>
+                <li><a  title="link8" id="link8"  onclick="openExternal(this.href, false);"><img src="css/images/img8.jpg"  alt="image8" id="img8"/></a></li>
+				<li><a  title="link9" id="link9"  onclick="openExternal(this.href, false);"><img src="css/images/img9.jpg"  alt="image9" id="img9"/></a></li>
+                <li><a  title="link10" id="link10"  onclick="openExternal(this.href, false);"><img src="css/images/img10.jpg"  alt="image10" id="img10"/></a></li>
+            </ul>
+            <ul class="webwidget_slideshow_simple2_nav"><li id="li_prev" class="webwidget_slideshow_simple2_nav_previous"></li><li id="li_next" class="webwidget_slideshow_simple2_nav_next"></li></ul>
+            <div style="clear: both"></div>
+        </div>
+		<div data-role="controlgroup" data-type="horizontal" >
+		<a href="javascript: Prev();" data-role="button" data-icon="arrow-l" id="btn_prev"  data-inline="true" data-theme="a">Prev</a>
+		<a href="javascript: Exit();" data-role="button" data-icon="back" data-mini="true" data-inline="true" >Exit</a>
+		<a href="javascript: Next();" data-role="button" data-icon="arrow-r" id="btn_next"  data-inline="true" data-theme="a">Next</a>
+		</div>
+
+	</div><!-- contentMain -->
+  	
+	
+	<script>
+	 var downloadFileName = "";
+	 var downloadContentLink = "";
+	 var count = 0;
+	 var download_count=0;
+	 var backbtn = false;
+	
+	function disable(){
+		return false;
+	}
+
+    function openExternal(href, locbar) { 
+        //window.plugins.childBrowser.onLocationChange = locationChanged; 
+        //window.plugins.childBrowser.onClose = closed;
+		if(href=='')
+		{
+			navigator.notification.alert(
+				"No website link found in the chosen picture, please wait for a while.",
+				"Bomo",
+				"Bomo"
+			);
+		}
+		else
+		{
+			navigator.notification.alert(
+				"Opening the website...",
+				"Bomo",
+				"Bomo"
+			);
+		}
+        //window.plugins.childBrowser.showWebPage(href,{showLocationBar: locbar});
+		//window.plugins.childBrowser.openExternal(href);
+		backbtn=true;
+		navigator.app.loadUrl(href, { openExternal:true });
+    } 
+	
+	function Exit(){
+		alert('Bye!');
+		navigator.app.exitApp();
+	}
+
+   function Prev()
+   {
+		$('#li_prev').click();
+   }
+    
+	function Next()
+	{
+		$('#li_next').click();
+	}
+	
+	
+	// Cordova API section
+	
+	// Wait for Cordova to load
+    document.addEventListener("deviceready", onDeviceReady, false);
+	//document.addEventListener("backbutton", onBackButtonPressed, false);
+	
+	
+	// Cordova is ready
+    function onDeviceReady() {
+	
+		var screen_width, screen_height;
+                $("#webwidget_slideshow_previousnext").webwidget_slideshow_previousnext({
+					slideshow_time_interval:"5000", 
+					slideshow_window_background_color:"#6e6e6e", 
+					slideshow_window_padding:"1", 
+					slideshow_window_width:screen_width, 
+					slideshow_window_height:screen_height, 
+					slideshow_border_size:"1", 
+					slideshow_border_color:"#6e6e6e", 
+					slideshow_button_style:"1", 
+					directory:"images", 
+					container:"webwidget_slideshow_previousnext" 
+				});
+
+		/*
+		for(var s=1; s<=10); s++{
+			InitImage(s);
+		}
+		*/
+		
+				
+		// Get the data directory, creating it if it doesn't exist.
+		console.log("device is ready");
+		window.requestFileSystem  = window.requestFileSystem || window.webkitRequestFileSystem;
+		window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, gotFS, fail);
+		
+		
+	} 
+	
+	document.addEventListener("backbutton", function(e){
+		if($.mobile.activePage.is('#homepage')){
+			//alert('Back History');
+			//e.preventDefault();
+           //navigator.app.exitApp();
+		   backbtn=true;
+		   console.log("Back Button Status 2: "+backbtn);
+		   navigator.app.backHistory();
+       }
+       else {
+			//alert('Exit App');
+           //navigator.app.backHistory();
+		   console.log("Back Button Status 2: "+backbtn);
+		   navigator.app.exitApp();
+       }
+	});
+
+	function fail() {
+		console.log("failed to get filesystem");
+	}
+	
+
+	function gotFS(fileSystem) {
+		window.FS = fileSystem;
+
+		var printDirPath = function(entry){
+			console.log("Dir path - " + entry.fullPath);
+		}
+
+		createDirectory("/bomo", printDirPath);
+		
+		for(var d=1; d<=10; d++)
+		{
+			count = d;
+			downloadFileName="img"+d+".jpg";
+			downloadContentLink="img"+d+".txt";
+			fileSystem.root.getFile("/mnt/sdcard/bomo/img"+d+".jpg", null, gotFileEntry, GetFileFromServer);
+			fileSystem.root.getFile("/mnt/sdcard/bomo/img"+d+".txt", null, gotContentLinkEntry, GetContentLinkFromServer);
+		}
+		
+		console.log("Back Button Status: "+backbtn);
+		
+		if(!backbtn)
+		{
+			CheckForUpdate();
+		}
+		
+	}
+
+	function createDirectory(path, success){
+		var dirs = path.split("/").reverse();
+		var root = window.FS.root;
+
+		var createDir = function(dir){
+			console.log("create dir " + dir);
+			root.getDirectory(dir, {
+				create : true,
+				exclusive : false
+			}, successCB, failCB);
+		};
+
+		var successCB = function(entry){
+			console.log("dir created " + entry.fullPath);
+			root = entry;
+			if(dirs.length > 0){
+				createDir(dirs.pop());
+			}else{
+				console.log("all dir created");
+				success(entry);
+			}
+		};
+
+		var failCB = function(){
+			console.log("failed to create dir " + dir);
+		};
+
+		createDir(dirs.pop());
+	}
+		
+	function gotFileEntry(path){
+		console.log("Read file "+path.name+" success!");
+		var FileIndexArr1 = path.name.split(".");
+		var FileIndexArr2 = FileIndexArr1[0].split("img");
+		var FileIndex = FileIndexArr2[1];
+		console.log("File Index "+FileIndex);
+		$("#img"+FileIndex).attr("src", "/mnt/sdcard/bomo/img"+FileIndex+".jpg");
+	}	
+	
+	function gotContentLinkEntry(fileEntry){
+		console.log("Content Link: "+fileEntry.name);
+		var FileIndexArr1 = fileEntry.name.split(".");
+		var FileIndexArr2 = FileIndexArr1[0].split("img");
+		var FileIndex = FileIndexArr2[1];
+		console.log("File Index "+FileIndex);
+		fileEntry.file(function(file){
+			var reader = new FileReader();
+			reader.onloadend = function(evt){
+			console.log("Link Result: "+evt.target.result);
+				$("#link"+FileIndex).attr("href", evt.target.result);
+			};
+			reader.readAsText(file);                        
+		},fail)
+	}	
+	
+	function GetFileFromServer(filePath){
+		console.log("Download File Name: "+downloadFileName);
+		var downloadIndexArr1 = downloadFileName.split(".");
+		var downloadIndexArr2 = downloadIndexArr1[0].split("img");
+		var downloadIndex = downloadIndexArr2[1];
+		console.log("Download File Index: "+downloadIndex);
+		
+		window.requestFileSystem(
+		LocalFileSystem.PERSISTENT, 0, 
+		function onFileSystemSuccess(fileSystem) {
+			fileSystem.root.getFile(
+			"dummy.html", {create: true, exclusive: false}, 
+			function gotFileEntry(fileEntry) {
+				var sPath = fileEntry.fullPath.replace("dummy.html","");
+				var fileTransfer = new FileTransfer();
+				fileEntry.remove();
+
+				fileTransfer.download(
+					"http://bomo.b2k.hk/bomo/img"+downloadIndex+".jpg",
+					sPath + "/bomo/img"+downloadIndex+".jpg",
+					function(theFile) {
+						console.log("download complete: " + theFile.toURI());
+						UpdateImage(downloadIndex, count);
+						console.log("Load img"+downloadIndex+".jpg complete!");
+						download_count++;
+						console.log("Before Download Success Count: "+download_count);
+						if(download_count>=10)
+						{
+							navigator.notification.alert(
+							"Update successfully! Please check the latest content!",
+							"Bomo",
+							"Bomo"
+							);
+							download_count=0;
+						}
+						console.log("After Download Success Count: "+download_count);
+					},
+					function(error) {
+						console.log("download error source " + error.source);
+						console.log("download error target " + error.target);
+						console.log("upload error code: " + error.code);
+						download_count++;
+						console.log("Download Count: "+download_count);
+						if(download_count<=1)
+						{
+							navigator.notification.alert(
+							"There was a problem with update, please check your Internet connection status.",
+							"Bomo",
+							"Bomo"
+							);
+							download_count=2;
+						}
+					}
+				);
+			}, fail);
+		},fail);
+	}
+	
+	function GetContentLinkFromServer(filePath){
+		console.log("Download Content Link: "+downloadContentLink);
+		var downloadIndexArr1 = downloadContentLink.split(".");
+		var downloadIndexArr2 = downloadIndexArr1[0].split("img");
+		var downloadIndex = downloadIndexArr2[1];
+		console.log("Download File Index: "+downloadIndex);
+		
+		window.requestFileSystem(
+		LocalFileSystem.PERSISTENT, 0, 
+		function onFileSystemSuccess(fileSystem) {
+			fileSystem.root.getFile(
+			"dummy.html", {create: true, exclusive: false}, 
+			function gotFileEntry(fileEntry) {
+				var sPath = fileEntry.fullPath.replace("dummy.html","");
+				var fileTransfer = new FileTransfer();
+				fileEntry.remove();
+
+				fileTransfer.download(
+					"http://bomo.b2k.hk/bomo/img"+downloadIndex+".txt",
+					sPath + "/bomo/img"+downloadIndex+".txt",
+					function(theFile) {
+						console.log("download complete: " + theFile.toURI());
+						UpdateContentLink(downloadIndex, count);
+						console.log("Load img"+downloadIndex+".txt complete!");
+						download_count++;
+						console.log("Before Download Success Count: "+download_count);
+						if(download_count>=10)
+						{
+							navigator.notification.alert(
+							"Update successfully! Please check the latest content!",
+							"Bomo",
+							"Bomo"
+							);
+							download_count=0;
+						}
+						console.log("After Download Success Count: "+download_count);
+					},
+					function(error) {
+						console.log("download error source " + error.source);
+						console.log("download error target " + error.target);
+						console.log("upload error code: " + error.code);
+						download_count++;
+						console.log("Download Count: "+download_count);
+						if(download_count<=1)
+						{
+							navigator.notification.alert(
+							"There was a problem with update, please check your Internet connection status.",
+							"Bomo",
+							"Bomo"
+							);
+							download_count=2;
+						}
+					}
+				);
+			}, fail);
+		},fail);
+	}
+	
+	function CheckForUpdate(){
+		var latest_update=true;
+		
+		download_count=0;
+		
+		
+		navigator.notification.alert(
+			"Checking update...",
+			"Bomo",
+			"Bomo"
+		);	
+		
+		//latest_update = CheckLatestUpdate();
+		
+		
+		for(var g=1; g<=10; g++)
+		{
+			downloadFileName="img"+g+".jpg";
+			GetFileFromServer(downloadFileName);
+			downloadContentLink="img"+g+".txt";
+			GetContentLinkFromServer(downloadContentLink);
+		}
+		
+	}
+	
+	function CheckLatestUpdate(){
+		var oldSerial = 0;
+		var newSerial = 0;
+		window.requestFileSystem(
+		LocalFileSystem.PERSISTENT, 0, 
+		function onFileSystemSuccess(fileSystem) {
+			fileSystem.root.getFile(
+			"dummy.html", {create: true, exclusive: false}, 
+			function gotFileEntry(fileEntry) {
+				var sPath = fileEntry.fullPath.replace("dummy.html","");
+				var fileTransfer = new FileTransfer();
+				fileEntry.remove();
+				
+				// Save Old Serial before download new
+				fileSystem.root.getFile("/mnt/sdcard/bomo/serial.txt", {create: true, exclusive: false},
+					function(fileEntry){
+						fileEntry.file(function(file){
+							var reader = new FileReader();
+							reader.onloadend = function(evt){
+								console.log("Old Serial: "+evt.target.result);
+								oldSerial = evt.target.result;
+							};
+							reader.readAsText(file);                        
+						},fail)
+					}, 
+				fail);
+				
+				// Take New Serial Now
+				fileTransfer.download(
+					"http://bomo.b2k.hk/bomo/serial.txt",
+					sPath + "/bomo/serial.txt",
+					function(theFile) {
+						console.log("download complete: " + theFile.toURI());
+						fileSystem.root.getFile("/mnt/sdcard/bomo/serial.txt", {create: true, exclusive: false},
+							function(fileEntry){
+								fileEntry.file(function(file){
+									var reader = new FileReader();
+									reader.onloadend = function(evt){
+										console.log("New Serial: "+evt.target.result);
+										newSerial = evt.target.result;
+									};
+									reader.readAsText(file);                        
+								},fail) 
+							}, 
+						false);
+					},
+					function(error) {
+						console.log("download error source " + error.source);
+						console.log("download error target " + error.target);
+						console.log("upload error code: " + error.code);
+					}
+				);
+			}, fail);
+		},fail);
+		console.log("Old Serial: "+oldSerial+", New Serial: "+newSerial);
+		if(newSerial > oldSerial)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	
+	function InitImage(count){
+		$("#link"+count).attr("href", "javascript: void(0)");
+	}
+	
+	function UpdateImage(downloadFileIndex, count){
+		$("#img"+count).attr("src", "/mnt/sdcard/bomo/img"+downloadFileIndex+".jpg");
+	}
+	
+	function UpdateContentLink(downloadIndex, count){
+		console.log("Content Link: img"+downloadIndex+".txt");
+		fileSystem.root.getFile("/mnt/sdcard/bomo/img"+downloadIndex+".txt", {create: true, exclusive: false},
+			function(fileEntry){
+			var reader = new FileReader();
+			reader.onloadend = function(evt){
+				console.log("Updated Content Link: "+evt.target.result);
+				$("#link"+count).attr("href", evt.target.result);
+			};
+			reader.readAsText(file);                        
+		},fail)
+	}
+  </script>
+</div> <!-- page1 -->
+
+
+<!-- Page ends here -->
+</body>
+</html>

@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+
+	<title>Bomo</title>
+	
+	<script>document.documentElement.className = 'js';</script>
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.5">
+	<!-- Force latest IE rendering engine & Chrome Frame -->
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<!-- Make IE recognise HTML5 elements for styling -->
+	<!--[if lte IE 8]><script src="js/html5.js"></script><![endif]-->
+	
+	<link rel="stylesheet" href="css/jquery.mobile-1.0a2.min.css" />
+	
+	<link rel="stylesheet" type="text/css" href="css/template.min.css" />
+	<link rel="stylesheet" type="text/css" href="css/template.theme.min.css" />
+	
+	<link rel="stylesheet" type="text/css" href="css/site.layout.css" />
+	<link rel="stylesheet" type="text/css" href="css/docs.classes.css" />
+	<link rel="stylesheet" type="text/css" href="css/site.highlight.light.css" />
+	
+	<script src="js/cordova-2.1.0.js"></script>
+	<script src="js/jquery-1.8.2.min.js"></script>
+	<script src="js/jquery.mobile-1.0a2.min.js"></script>
+	<script src="js/jquery.event.move.js"></script>
+	<script src="js/jquery.event.swipe.js"></script>
+	<script src="js/bomo_swipe.js"></script>
+	<script src="js/jquery.cycle.all.js"></script>
+	<script src="js/jquery.touchwipe.min.js"></script>
+	<script type="text/javascript" charset="utf-8" src="js/statusbarnotification.js"></script>
+	<script type="text/javascript" charset="utf-8" src="js/jquery.xml2json.js"></script>
+	
+	<!--[if lte IE 8]><link rel="stylesheet" type="text/css" href="css/template.ie.css" /><![endif]-->
+	<!--[if IE 8]><link rel="stylesheet" type="text/css" href="css/template.ie8.css" /><![endif]-->
+	<!--[if IE 7]><link rel="stylesheet" type="text/css" href="css/template.ie7.css" /><![endif]-->
+	
+	<style>
+		.site_wrap > .slides_wrap {
+			//margin-bottom: 1em;
+			//margin-left: -8px;
+			//margin-right: -8px;
+		}
+
+		.img_slides_wrap {
+			width: 100%;
+			border: 0px solid #333333;
+			background-color: #444444;
+			overflow: hidden;
+		}
+
+		.img_slide {
+			padding: 0;
+		}
+
+		.js .img_slide {
+			/* Overide template's height transitions. */
+			width: 100%;
+			height: auto;
+		}
+
+		.slide_buttons_index {
+			text-align: center;
+		}
+
+		.notransition,
+		.notransition .slide {
+			-webkit-transition-duration: 0 !important;
+			   -moz-transition-duration: 0 !important;
+			    -ms-transition-duration: 0 !important;
+			        transition-duration: 0 !important;
+		
+			-webkit-transition-delay: 0 !important;
+			   -moz-transition-delay: 0 !important;
+			    -ms-transition-delay: 0 !important;
+			        transition-delay: 0 !important;
+		}
+
+		@media screen and (max-width: 640px) {
+			.img_slides_wrap {
+				width: 100%;
+
+				-webkit-box-sizing: content-box;
+				   -moz-box-sizing: content-box;
+				    -ms-box-sizing: content-box;
+				        box-sizing: content-box;
+			}
+		}
+	</style>
+	<script>
+	 var downloadFileName = "";
+	 var downloadContentLink = "";
+	 var count = 0;
+	 var backbtn = false;
+	 var nofile = false;
+	 var noContentLink = false;
+	 var serial = '';
+	 var pic_count = new Array();
+	 var link_count = new Array();
+	 var update_pic_count = 0;
+	 var update_link_count = 0;
+	 var pointer = 0;
+	 var update_failed_count = 0;
+	 var server_serial = 0;
+	 var content_link_index = 0;
+	 var finished_update=0;
+	 var init_count = 0;
+	 var serial_flag=false;
+	 var pic_file_count = 1;
+	 var link_file_count = 1;
+	 var link_file_count2 = 0;
+	 var k1 = 0;
+	 var k2 = 0;
+	 var init_link_index = 0;
+	 var init_link = "";
+	 var contentMain_width, contentMain_height;
+	 var bomo_lbl = new Array();
+	 
+    function openExternal(href, locbar) { 
+		if(document.getElementById(href).value=='')
+		{
+			navigator.notification.alert(
+				"Website link is not ready yet, please wait for a while...",
+				"Bomo",
+				"Bomo"
+			);
+		}
+		else
+		{
+			backbtn=true;
+			navigator.app.loadUrl(document.getElementById(href).value, {openExternal:true});
+		}
+    } 
+	
+	function Exit(){
+		alert('Bye!');
+		navigator.app.exitApp();
+	}
+	
+	
+	// Cordova API section
+	
+	// Wait for Cordova to load
+    document.addEventListener("deviceready", onDeviceReady, false);
+	//document.addEventListener("backbutton", onBackButtonPressed, false);
+	
+	
+	// Cordova is ready
+    function onDeviceReady() {
+	
+		contentMain_width = parseInt($("#contentMain").width()/0.6); // Keep aspect ratio of height, 0.6 = 480 / 800
+		console.log("Content Main Width: "+contentMain_width);
+		
+		contentMain_height= parseInt($("#contentMain").height());
+		if(contentMain_height>533){
+			contentMain_height+=20;
+		}
+		console.log("Content Main Height: "+contentMain_height);
+		
+		$.get('xml/bomo_data.xml', function(xml){
+
+            // converts received XML document to string
+            var xmlText = new XMLSerializer().serializeToString(xml);
+            console.log(xmlText);
+
+            var bomo_data = $.xml2json(xml);
+            //console.log("Bomo Data: "+bomo_data);
+            //alert(bomo_data.employee[0].name);
+			bomo_lbl['title'] = bomo_data.bomo[0].name;
+			bomo_lbl['last'] = bomo_data.bomo[1].name;
+			bomo_lbl['check_update'] = bomo_data.bomo[2].name;
+			bomo_lbl['check_update_desc'] = bomo_data.bomo[3].name;
+			bomo_lbl['update'] = bomo_data.bomo[4].name;
+			bomo_lbl['update_desc'] = bomo_data.bomo[5].name;
+			bomo_lbl['latest'] = bomo_data.bomo[6].name;
+			bomo_lbl['sdcard'] = bomo_data.bomo[7].name;
+			bomo_lbl['sdcard_desc'] = bomo_data.bomo[8].name;
+			console.log("Bomo Data Str: "+bomo_lbl['title']+", "+bomo_lbl['last']+", "+bomo_lbl['check_update']+", "+
+						bomo_lbl['check_update_desc']+", "+bomo_lbl['update']+", "+bomo_lbl['update_desc']+", "+bomo_lbl['latest']+
+						", "+bomo_lbl['sdcard']+", "+bomo_lbl['sdcard_desc']);
+        });
+			
+		// Get the data directory, creating it if it doesn't exist.
+		console.log("device is ready");
+		window.requestFileSystem  = window.requestFileSystem || window.webkitRequestFileSystem;
+		window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, gotFS, fail);
+		
+		$("#contentMain").touchwipe({
+			//wipeLeft: function() { alert("left"); },
+			//wipeRight: function() { alert("right"); },
+			wipeUp: function() { 
+				console.log("Scrolling up");
+				$('#hdrMain').fadeIn('fast');
+			},
+			wipeDown: function() {
+				console.log("Scrolling down");
+				$('#hdrMain').fadeOut('fast');
+			},
+			//min_move_x: 20,
+			//min_move_y: 20,
+			preventDefaultEvents: true
+		});
+		
+		
+	} 
+	
+	// Not used yet, please ignore
+	/*
+	function networkConnectionCheck(reachability) {
+		if ( reachability.remoteHostStatus == NetworkStatus.NOT_REACHABLE ) {
+			window.plugins.statusBarNotification.notify("Bomo - Update cotent has problem, please try again later", "Please check your internet connection");
+		}
+	};
+	*/
+	
+	document.addEventListener("backbutton", function(e){
+		if($.mobile.activePage.is('#homepage')){
+			//alert('Back History');
+			//e.preventDefault();
+           //navigator.app.exitApp();
+		   backbtn=true;
+		   console.log("Back Button Status 2: "+backbtn);
+		   navigator.app.backHistory();
+       }
+       else {
+			//alert('Exit App');
+           //navigator.app.backHistory();
+		   console.log("Back Button Status 2: "+backbtn);
+		   navigator.app.exitApp();
+       }
+	});
+
+	function readfail() {
+		console.log("failed to read file");
+		//window.plugins.statusBarNotification.notify("Bomo - SD Card not found, please check and re-open Bomo", "Please ensure your SD card is mount in your phone");
+	}
+	
+	function fail() {
+		console.log("failed to get filesystem");
+		//window.plugins.statusBarNotification.notify("Bomo - SD Card not found / not ready", "Please ensure your SD card is mount in your phone");
+	}
+	
+
+	function gotFS(fileSystem) {
+		window.FS = fileSystem;
+
+		var printDirPath = function(entry){
+			console.log("Dir path - " + entry.fullPath);
+		}
+
+		createDirectory("/bomo", printDirPath);
+		
+		console.log("Before Checking Serial...");
+		fileSystem.root.getFile("/mnt/sdcard/bomo/serial.txt", {create: true, exclusive: false}, gotSerialEntry, fail);
+		console.log("After Checking Serial...");
+		
+		console.log("Before Checking Last Modified...");
+		fileSystem.root.getFile("/mnt/sdcard/bomo/last_modified.txt", {create: true, exclusive: false}, gotLastModifiedEntry, AssignDefaultDate);
+		console.log("After Checking Last Modified...");
+	}
+
+	function createDirectory(path, success){
+		var dirs = path.split("/").reverse();
+		var root = window.FS.root;
+
+		var createDir = function(dir){
+			console.log("create dir " + dir);
+			root.getDirectory(dir, {
+				create : true,
+				exclusive : false
+			}, successCB, failCB);
+		};
+
+		var successCB = function(entry){
+			console.log("dir created " + entry.fullPath);
+			root = entry;
+			if(dirs.length > 0){
+				createDir(dirs.pop());
+			}else{
+				console.log("all dir created");
+				success(entry);
+			}
+		};
+
+		var failCB = function(){
+			console.log("failed to create dir " + dir);
+		};
+
+		createDir(dirs.pop());
+	}
+	
+	function gotSerialEntry(fileEntry){
+		console.log("Read serial file "+fileEntry.name+" success!");
+		fileEntry.file(function(file){
+			var reader = new FileReader();
+			reader.onloadend = function(evt){
+			console.log("Serial Number: "+evt.target.result);
+				if(evt.target.result!=''){
+					serial = evt.target.result;
+					var init = serial-9;
+					if(init<=0){
+						init=1;
+					}
+		
+					console.log("Init: "+init+", Serial: "+serial);
+		
+					k1 = init-1;
+					k2 = init-1;
+					init_link_index = 1;
+					for(var d=init; d<=serial; d++)
+					{
+						console.log("Img Count: "+pic_file_count+", Link Count: "+link_file_count+", d: "+d);
+						downloadFileName="img"+d+".jpg";
+						downloadContentLink="img"+d+".txt";
+						window.requestFileSystem(
+						LocalFileSystem.PERSISTENT, 0, 
+						function onFileSuc1(fileSystem){
+						
+						console.log("K1: "+k1+", pic_file_count: "+pic_file_count);
+						console.log("K2: "+k2+", link_file_count: "+link_file_count);
+						fileSystem.root.getFile("/mnt/sdcard/bomo/img"+(k1+pic_file_count)+".jpg", null, 
+							function gotPicEntry(path){
+								console.log("Read file "+path.name+" success!");
+								var FileIndexArr1 = path.name.split(".");
+								var FileIndexArr2 = FileIndexArr1[0].split("img");
+								var FileIndex = FileIndexArr2[1];
+								console.log("File Index "+FileIndex+", Slide Index: "+pic_file_count);
+								$("#slide"+pic_file_count).attr("src", "/mnt/sdcard/bomo/img"+(parseInt(FileIndex)+parseInt(pic_file_count)-1)+".jpg?timestamp="+new Date().getTime());
+								$("#slide"+pic_file_count).css('height',contentMain_height);
+								$("#slide"+pic_file_count).css('width','100%');
+								
+								pic_file_count++;
+								k1++;
+							}, FileEntryFailed);
+						fileSystem.root.getFile("/mnt/sdcard/bomo/img"+(k2+link_file_count)+".txt", null, 
+							function gotContentLinkEntry(fileEntry){
+								console.log("Content Link: "+fileEntry.name);
+								var FileIndexArr1 = fileEntry.name.split(".");
+								var FileIndexArr2 = FileIndexArr1[0].split("img");
+								var FileIndex = FileIndexArr2[1];
+								console.log("File Index "+FileIndex+", Link Index: "+link_file_count2);
+								link_file_count2++;
+								InitContentLink("/mnt/sdcard/bomo/img"+(parseInt(FileIndex))+".txt", parseInt(link_file_count2)+1);
+						}, ContentLinkEntryFailed);
+						link_file_count++;
+						}, fail);
+					}
+					
+				}
+				else{
+					serial = 1;
+					var init = serial-9;
+					if(init<=0){
+						init=1;
+					}
+		
+					console.log("Init: "+init+", Serial: "+serial);
+	
+					k1 = init-1;
+					k2 = init-1;
+					init_link_index = 1;
+					for(var d=init; d<=serial; d++)
+					{
+						console.log("Img Count: "+pic_file_count+", Link Count: "+link_file_count+", d: "+d);
+						downloadFileName="img"+d+".jpg";
+						downloadContentLink="img"+d+".txt";
+						window.requestFileSystem(
+						LocalFileSystem.PERSISTENT, 0, 
+						function onFileSuc2(fileSystem){
+						console.log("K1: "+k1+", pic_file_count: "+pic_file_count+", d: "+d);
+						console.log("K2: "+k2+", link_file_count: "+link_file_count+", d: "+d);
+						fileSystem.root.getFile("/mnt/sdcard/bomo/img"+(k1+pic_file_count)+".jpg", null, 
+							function gotPicEntry(path){
+								console.log("Read file "+path.name+" success!");
+								var FileIndexArr1 = path.name.split(".");
+								var FileIndexArr2 = FileIndexArr1[0].split("img");
+								var FileIndex = FileIndexArr2[1];
+								console.log("File Index "+FileIndex+", Slide Index: "+pic_file_count);
+								$("#slide"+pic_file_count).attr("src", "/mnt/sdcard/bomo/img"+(parseInt(FileIndex)+parseInt(pic_file_count)-1)+".jpg?timestamp="+new Date().getTime());
+								$("#slide"+pic_file_count).css('height',contentMain_height);
+								$("#slide"+pic_file_count).css('width','100%');
+								
+								pic_file_count++;
+							}, FileEntryFailed);
+						fileSystem.root.getFile("/mnt/sdcard/bomo/img"+(k2+link_file_count)+".txt", null, 
+							function gotContentLinkEntry(fileEntry){
+								console.log("Content Link: "+fileEntry.name);
+								var FileIndexArr1 = fileEntry.name.split(".");
+								var FileIndexArr2 = FileIndexArr1[0].split("img");
+								var FileIndex = FileIndexArr2[1];
+								console.log("File Index "+FileIndex+", Link Index: "+link_file_count2);
+								link_file_count2++;
+								InitContentLink("/mnt/sdcard/bomo/img"+(parseInt(FileIndex))+".txt", parseInt(link_file_count2)+1);
+						}, ContentLinkEntryFailed);
+						link_file_count++;
+						}, fail);
+					}
+				}
+			};
+			reader.readAsText(file);                        
+		},fail)
+	}
+	
+	function InitContentLink(file, index){
+		var reader = new FileReader();
+  
+		// Read file into memory as UTF-8      
+		reader.readAsText(file, "UTF-8");
+  
+		// Handle progress, success, and errors
+		reader.onload = ApplyLink;
+		reader.onerror = AssignDefaultSerial;
+		
+		console.log("Init Link: "+init_link);
+	}
+	
+	function ApplyLink(evt){
+		console.log("LINK2 INDEX: "+link_file_count2);
+		console.log("Init Link Index: "+init_link_index+", Link Result: "+evt.target.result);
+		document.getElementById("hplink"+(parseInt(init_link_index))).value=evt.target.result;
+		init_link_index++;
+		init_link=evt.target.result;
+	}
+	
+	function gotLastModifiedEntry(fileEntry){
+		console.log("Read last modofied file "+fileEntry.name+" success!");
+		fileEntry.file(function(file){
+			var reader = new FileReader();
+			reader.onloadend = function(evt){
+			console.log("Last modified: "+evt.target.result);
+				if(evt.target.result!=''){
+					document.getElementById('last_time').innerHTML = evt.target.result;
+				}
+				else{
+					document.getElementById('last_time').innerHTML = "- - -";
+				}
+			};
+			reader.readAsText(file);                        
+		},fail)
+	}
+
+	function AssignDefaultDate(){
+		document.getElementById('last_time').innerHTML = "- - -";
+	}
+	
+	/*
+	Commented by Raymond Yeung on 10-27-2012, 11:12am
+	Used UpdateSerial() function to replace these
+	
+	function PrepareUpdateSerial(fileSystem){
+		//window.FS = fileSystem;
+		console.log("Prepare update serial");
+		fileSystem.root.getFile("/mnt/sdcard/bomo/serial.txt", {create: true}, PrepareSerialWriter, fail);
+	}
+	
+	function PrepareSerialWriter(fileEntry){
+		console.log("Prepare writer");
+		fileEntry.createWriter(WriteSerial, fail);
+	}
+	
+	function WriteSerial(writer){
+		writer.onwrite = function(evt) {
+            console.log("Serial write to SD card: "+serial);
+        };
+		write.write(serial);
+		console.log("write serial.txt success!");
+	}
+	*/
+	
+	function UpdateSerial(serial){
+		var writer = new FileWriter("/mnt/sdcard/bomo/serial.txt");
+		console.log("Before writing serial.txt...");
+		console.log("Update Serial: "+serial);
+		writer.write(serial);
+		console.log("write serial.txt success!");
+	}
+	
+	function UpdateLastModified(time){
+		var writer = new FileWriter("/mnt/sdcard/bomo/last_modified.txt");
+		console.log("Before writing last_modified.txt...");
+		console.log("Update Time: "+time);
+		writer.write(time);
+		console.log("write last_modified.txt success!");
+	}
+	
+
+	function ReadSerial(readFile){
+		var reader = new FileReader();
+  
+		// Read file into memory as UTF-8      
+		reader.readAsText(readFile, "UTF-8");
+  
+		// Handle progress, success, and errors
+		reader.onload = SaveSerial;
+		reader.onerror = AssignDefaultSerial;
+
+	}
+	
+	function SaveSerial(evt){
+		console.log("Read serial success! Serial in SD card: "+evt.target.result);
+		if(evt.target.result!='')
+		{
+			serial = parseInt(evt.target.result);
+		}
+		else{
+			serial=0;
+		}
+	}
+	
+	function AssignDefaultSerial(){
+		serial=0;
+	}
+	
+	function ReadServerSerial(readFile){
+		var reader = new FileReader();
+  
+		// Read file into memory as UTF-8      
+		reader.readAsText(readFile, "UTF-8");
+  
+		// Handle progress, success, and errors
+		reader.onload = SaveServerSerial;
+		reader.onerror = fail;
+	}
+	
+	function SaveServerSerial(evt){
+		console.log("Save server serial success! Server serial in SD card: "+evt.target.result);
+		server_serial = parseInt(evt.target.result);
+		DetermineUpdate(serial, server_serial);
+	}
+	
+	function ReadLastModified(readFile){
+		var reader = new FileReader();
+  
+		// Read file into memory as UTF-8      
+		reader.readAsText(readFile, "UTF-8");
+  
+		// Handle progress, success, and errors
+		reader.onload = ShowLastModified;
+		reader.onerror = fail;
+	}
+	
+	function ShowLastModified(evt){
+		console.log("Read last modified time success! Last modified time in SD card: "+evt.target.result);
+		document.getElementById('last_time').innerHTML = evt.target.result;
+	}
+	
+	function FileEntryFailed(){
+		nofile = true;
+	}
+	
+	function ContentLinkEntryFailed(){
+		noContentLink = true;
+	}
+	
+	function CheckForUpdate(){
+	
+		document.getElementById('updated_serial_once').value = "false";
+		finished_update=0;
+		update_pic_count=0;
+		update_link_count=0;
+	
+		window.plugins.statusBarNotification.notify("Bomo - Checking for update", "Please ensure your internet connection is working");
+		
+		// Check serial when pressing update
+		ReadSerial("/mnt/sdcard/bomo/serial.txt");
+		console.log("Serial before update: "+serial);
+		if(serial=='' || serial=='NaN'){
+			serial=0;
+		}
+		
+		// init pic_count array and link_count_array
+		for(var y=1; y<=10; y++){
+			pic_count[y]=0;
+			link_count[y]=0;
+			
+		}
+		
+		CheckServerSerial();
+		
+	}
+	
+	function CheckServerSerial(){
+		window.requestFileSystem(
+		LocalFileSystem.PERSISTENT, 0, 
+		function onFileSystemSuccess(fileSystem) {
+			fileSystem.root.getFile(
+			"dummy.html", {create: true, exclusive: false}, 
+			function gotFileEntry(fileEntry) {
+				var sPath = fileEntry.fullPath.replace("dummy.html","");
+				var fileTransfer = new FileTransfer();
+				fileEntry.remove();
+
+				fileTransfer.download(
+					"http://bomo.b2k.hk/bomo/server_serial.txt",
+					sPath + "/bomo/server_serial.txt",
+					function(theFile) {
+						console.log("Load server_serial.txt complete!");
+						ReadServerSerial("/mnt/sdcard/bomo/server_serial.txt");
+						console.log("Serial: "+serial+", Server serial: "+server_serial);
+					},
+					function(error) {
+						console.log("download error source " + error.source);
+						console.log("download error target " + error.target);
+						console.log("upload error code: " + error.code);
+						server_serial = 0;
+						window.plugins.statusBarNotification.notify("Bomo - This is the latest content, please try to update later", "");
+					}
+				);
+			}, fail);
+		},fail);
+	}
+	
+	function DetermineUpdate(serial, server_serial){
+		console.log("Serial :"+serial+", Server serial: "+server_serial);
+		console.log("Updated Serial Once Flag: "+document.getElementById('updated_serial_once').value);
+		console.log("Last Count: "+document.getElementById('last_count').value);
+		if(serial>=server_serial){
+			window.plugins.statusBarNotification.notify("Bomo - This is the latest content, please try to update later", "");
+		}
+		else{
+			// Rest pointer to 0 for when pressed update button
+			pointer = 0;
+			update_failed_count = 0;
+			document.getElementById('update_failed').value="false";
+			// Last Count is used for remember last update slide
+			for(var g=document.getElementById('last_count').value; g<=10; g++)
+			{	
+				console.log("G: "+parseInt(g)+", Serial: "+parseInt(serial));
+				downloadFileName="img"+(parseInt(g)+parseInt(serial))+".jpg";
+				GetFileFromServer(downloadFileName, g);
+				downloadContentLink="img"+(parseInt(g)+parseInt(serial))+".txt";
+				GetContentLinkFromServer(downloadContentLink, g);
+			}
+		
+			
+				
+		
+			var currentDate = new Date();
+			var day = currentDate.getDate();
+			var month = currentDate.getMonth() + 1;
+			var year = currentDate.getFullYear();
+			var hour = currentDate.getHours();
+			var min = currentDate.getMinutes();
+			var sec = currentDate.getSeconds();
+			if (min < 10){
+				min = "0" + min;
+			}
+			if (sec < 10){
+				sec = "0" + sec;
+			}
+		
+			var date_str = year+"-"+month+"-"+day+" "+hour+":"+min;
+			console.log("Before update last modified...");
+			UpdateLastModified(date_str);
+			document.getElementById('last_time').innerHTML=date_str;
+			console.log("After update last modified...");
+		}
+	}
+	
+	function GetFileFromServer(filePath, content_count){
+		console.log("Download File Name: "+downloadFileName);
+		var downloadIndexArr1 = downloadFileName.split(".");
+		var downloadIndexArr2 = downloadIndexArr1[0].split("img");
+		var downloadIndex = downloadIndexArr2[1];
+		console.log("Download File Index: "+downloadIndex);
+		
+		window.requestFileSystem(
+		LocalFileSystem.PERSISTENT, 0, 
+		function onFileSystemSuccess(fileSystem) {
+			fileSystem.root.getFile(
+			"dummy.html", {create: true, exclusive: false}, 
+			function gotFileEntry(fileEntry) {
+				var sPath = fileEntry.fullPath.replace("dummy.html","");
+				var fileTransfer = new FileTransfer();
+				fileEntry.remove();
+
+				fileTransfer.download(
+					"http://bomo.b2k.hk/bomo/img"+downloadIndex+".jpg",
+					sPath + "/bomo/img"+downloadIndex+".jpg",
+					function(theFile) {
+						console.log("Content Count in download img: "+(content_count));
+						/*
+						if((parseInt(content_count))==1){
+							console.log("Save Dummy test");
+							SaveDummy(downloadIndex);
+						}
+						*/
+						//UpdateImage(downloadIndex, content_count);
+						console.log("Load img"+downloadIndex+".jpg complete!");
+						pic_count[parseInt(content_count)]=1;
+						update_pic_count++;
+						UpdatePointer(content_count, pic_count, link_count, update_pic_count, update_link_count);
+					},
+					function(error) {
+						console.log("download error source " + error.source);
+						console.log("download error target " + error.target);
+						console.log("upload error code: " + error.code);
+						document.getElementById('update_failed').value="true";
+						update_pic_count++;
+						// check to see if the network is reachable
+						//navigator.network.isReachable("bomo.b2k.hk", networkConnectionCheck, {isIpAddress:false});
+						UpdatePointer(content_count, pic_count, link_count, update_pic_count, update_link_count);
+					}
+				);
+			}, fail);
+		},fail);
+	}
+	
+	function GetContentLinkFromServer(filePath, content_count){
+		console.log("Download Content Link: "+downloadContentLink);
+		var downloadIndexArr1 = downloadContentLink.split(".");
+		var downloadIndexArr2 = downloadIndexArr1[0].split("img");
+		var downloadIndex = downloadIndexArr2[1];
+		console.log("Download File Index: "+downloadIndex);
+		
+		window.requestFileSystem(
+		LocalFileSystem.PERSISTENT, 0, 
+		function onFileSystemSuccess(fileSystem) {
+			fileSystem.root.getFile(
+			"dummy.html", {create: true, exclusive: false}, 
+			function gotFileEntry(fileEntry) {
+				var sPath = fileEntry.fullPath.replace("dummy.html","");
+				var fileTransfer = new FileTransfer();
+				fileEntry.remove();
+
+				fileTransfer.download(
+					"http://bomo.b2k.hk/bomo/img"+downloadIndex+".txt",
+					sPath + "/bomo/img"+downloadIndex+".txt",
+					function(theFile) {
+						//UpdateContentLink(downloadIndex, content_count);
+						console.log("Load img"+downloadIndex+".txt complete!");
+						link_count[parseInt(content_count)]=1;
+						update_link_count++;
+						UpdatePointer(content_count, pic_count, link_count, update_pic_count, update_link_count);
+					},
+					function(error) {
+						console.log("download error source " + error.source);
+						console.log("download error target " + error.target);
+						console.log("upload error code: " + error.code);
+						document.getElementById('update_failed').value="true";
+						update_link_count++;
+						// check to see if the network is reachable
+						//navigator.network.isReachable("bomo.b2k.hk", networkConnectionCheck, {isIpAddress:false});
+						UpdatePointer(content_count, pic_count, link_count, update_pic_count, update_link_count);
+					}
+				);
+			}, fail);
+		},fail);
+	}
+	
+	// For solving the problem of #slide1 cannot reload image after update
+	function SaveDummy(downloadIndex) {
+		console.log("Dummy Image download index: "+downloadIndex);
+		window.requestFileSystem(
+		LocalFileSystem.PERSISTENT, 0, 
+		function onFileSystemSuccess(fileSystem) {
+			fileSystem.root.getFile(
+			"dummy.html", {create: true, exclusive: false}, 
+			function gotFileEntry(fileEntry) {
+				var sPath = fileEntry.fullPath.replace("dummy.html","");
+				var fileTransfer = new FileTransfer();
+				fileEntry.remove();
+
+				fileTransfer.download(
+					"http://bomo.b2k.hk/bomo/img"+downloadIndex+".jpg",
+					sPath + "/bomo/img0.jpg",
+					function(theFile) {
+						// Force slide1 load img0.jpg
+						// Slide1 Cannot load lastest image in UpdateImage() function, may be it is a bug in the swipe function...
+						console.log("Saved image to img0.jpg, start update slide1 image");
+						$("#slide1").attr("src", "/mnt/sdcard/bomo/img0.jpg?timestamp="+new Date().getTime());
+						//$("#slide1").css('width', "100%");
+						//$("#slide1").height(contentMain_width/0.6); // Keep aspect radio and scale by height, 0.6 = 800 / 480
+						$("#slide1").css('height',contentMain_width);
+						$("#slide1").css('width','100%');
+					},
+					function(error) {
+						console.log("download error source " + error.source);
+						console.log("download error target " + error.target);
+						console.log("upload error code: " + error.code);
+						document.getElementById('update_failed').value="true";
+						// check to see if the network is reachable
+						//navigator.network.isReachable("bomo.b2k.hk", networkConnectionCheck, {isIpAddress:false});
+					}
+				);
+			}, fail);
+		},fail);
+	}
+	
+	function UpdatePointer(content_count, pic_count, link_count, update_pic_count, update_link_count){
+		console.log("Update Pointer Test "+(parseInt(content_count)));
+		console.log("Content Count Index: "+(parseInt(content_count))+", Pic Count: "+pic_count[parseInt(content_count)]+", Link Count: "+link_count[parseInt(content_count)]);
+		console.log("Update Pic Count: "+update_pic_count+", Update Link Count: "+update_link_count);
+		if(pic_count[parseInt(content_count)]==1 && link_count[parseInt(content_count)]==1){
+			pointer++;
+			if(update_pic_count==10 && update_link_count==10){
+				finished_update=1;
+			}
+		}
+		else{
+			if(update_pic_count==10 && update_link_count==10){
+				finished_update=1;
+			}
+		}
+		console.log("Finished Update: "+finished_update);
+		if(update_pic_count==10 && update_link_count==10){
+			console.log('Pointer: '+pointer);
+			
+			CheckAndWriteSerial(content_count, pointer, update_pic_count, update_link_count);
+		}
+	}
+	
+	function CheckAndWriteSerial(content_count, pointer, update_pic_count, update_link_count){
+		console.log("Content Counter: "+(content_count)+", updated_serial_once flag: "+document.getElementById('updated_serial_once').value);
+		if(update_pic_count==10 && update_link_count==10 && document.getElementById('updated_serial_once').value!='true'){
+			serial+=pointer;
+			console.log("Before update Serial...");
+			UpdateSerial(serial);
+			console.log("After update Serial...");
+			document.getElementById('updated_serial_once').value="true";
+		}
+		if(update_pic_count==10 && update_link_count==10){
+			if(pointer<10){
+				document.getElementById('last_count').value=pointer;
+			}
+			else{
+				document.getElementById('last_count').value=1;
+			}
+			window.plugins.statusBarNotification.notify("Bomo - Updated number of contents: "+pointer, "Please check the latest content");
+			window.location.reload();
+			/*
+			for(var p=1; p<=10; p++){
+				$("#slide"+p).css('width', "100%");
+				$("#slide"+p).height($("#contentMain").width() / 0.6); // Keep aspect radio and scale by height, 0.6 = 800 / 480
+			}
+			*/
+		}
+		//CheckUpdateStatus(content_count, pointer);
+	}
+	
+	function CheckUpdateStatus(content_count, pointer){
+		var update_failed_flag = document.getElementById('update_failed').value;
+		if((parseInt(content_count))>=10 && document.getElementById('updated_serial_once').value=="true"){
+			window.plugins.statusBarNotification.notify("Bomo - Updated number of contents: "+pointer, "Please check the latest content");
+		}
+	}
+	
+	function UpdateImage(downloadFileIndex, count){
+		console.log("Before Update Image"+(count)+": /mnt/sdcard/bomo/img"+downloadFileIndex+".jpg");
+		console.log("Counter"+(count)+": Image Index: "+downloadFileIndex);
+		//$("#slide"+(count)).attr("src", "/mnt/sdcard/bomo/img"+downloadFileIndex+".jpg?timestamp="+new Date().getTime());
+		console.log("Slide "+count+" Image src: "+$("#slide"+count).attr("src"));
+		//$("#slide"+count).css('width', "100%");
+		//$("#slide"+count).height(contentMain_width/0.6); // Keep aspect radio and scale by height, 0.6 = 800 / 480
+		$("#slide"+count).css('height',contentMain_width);
+		$("#slide"+count).css('width','100%');
+		console.log("Image Slide "+count+" Width: "+$("#slide"+count).width()+", Height: "+$("#slide"+count).height());
+		console.log("After Update Image"+(count)+": /mnt/sdcard/bomo/img"+downloadFileIndex+".jpg");
+	}
+	
+	function UpdateContentLink(downloadIndex, count){
+		console.log("Content Link: img"+downloadIndex+".txt");
+		console.log("Content Link Count: "+count);
+
+		//content_link_index = (count);
+		
+		window.requestFileSystem  = window.requestFileSystem || window.webkitRequestFileSystem;
+		window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, 
+		function GetLatestContentLink(fileSystem) {
+				console.log("Latest content Link Count: "+parseInt(count));
+				fileSystem.root.getFile("/mnt/sdcard/bomo/img"+parseInt(count)+".txt", null, 
+				function GetLatestContentEntry(fileEntry) {
+					console.log("Read content Link "+parseInt(count)+" success!");
+					fileEntry.file(function(file){
+						var reader = new FileReader();
+						reader.onloadend = function(evt){
+							console.log("Updated Link Result: "+evt.target.result);
+							//$("#hplink"+FileIndex).attr("value", evt.target.result);
+							document.getElementById("hplink"+parseInt(count)).value=evt.target.result;
+							console.log("Updated Link in html: "+document.getElementById("hplink"+parseInt(count)).value);
+						};
+						reader.readAsText(file);                        
+					},readfail);
+				}, readfail);
+		}, fail);
+	}
+	
+	function CreatePromotion()
+	{
+		window.location.href="check_connection.html";
+	}
+  </script>
+</head>
+
+<body>
+	<!-- Page starts here -->
+<div data-role="page" data-theme="a" id="homepage">
+
+	<div data-role="header" id="hdrMain" name="hdrMain" data-nobackbtn="true">
+		<div style="float: left;font-size: 11px;margin-top: 8px;margin-left: 10px;">Last: </div>
+		<div id="last_time" style="float: left;padding-left: 5px;font-size: 11px;margin-top: 8px;width: 34%;"></div>
+		<div style="float: left;font-size: 20px;text-align: center;">Bomo</div>
+		<div style="float:right;margin-top: 5px;margin-right: 10px;"><img src="css/images/write_icon.png" width="20" height="20" data-iconpos="notext" onclick="javascript: this.blur();CreatePromotion();"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="css/images/update_logo.jpg" width="20" height="20" data-iconpos="notext" onclick="javascript: this.blur();CheckForUpdate();"/></div>
+	</div>
+	<div data-role="content" id="contentMain" name="contentMain" style="padding: 0px;">	
+		<div class="site_wrap wrap">
+			<div class="img_slides_wrap slides_wrap wrap">
+				<a title="link1" id="link1"  onclick="openExternal('hplink1', false);"/><img class="img_slide slide active" id="slide1" alt="slide1" src="css/images/img1.jpg"
+				/></a><a title="link2" id="link2"  onclick="openExternal('hplink2', false);"><img class="img_slide slide" id="slide2" alt="slide2" src="css/images/img2.jpg"
+				/></a><a title="link3" id="link3"  onclick="openExternal('hplink3', false);"><img class="img_slide slide" id="slide3" alt="slide3" src="css/images/img3.jpg"
+				/></a><a title="link4" id="link4"  onclick="openExternal('hplink4', false);"><img class="img_slide slide" id="slide4" alt="slide4" src="css/images/img4.jpg" 
+				/></a><a title="link5" id="link5"  onclick="openExternal('hplink5', false);"><img class="img_slide slide" id="slide5" alt="slide5" src="css/images/img5.jpg"
+				/></a><a title="link6" id="link6"  onclick="openExternal('hplink6', false);"><img class="img_slide slide" id="slide6" alt="slide6" src="css/images/img6.jpg"
+				/></a><a title="link7" id="link7"  onclick="openExternal('hplink7', false);"><img class="img_slide slide" id="slide7" alt="slide7" src="css/images/img7.jpg" 
+				/></a><a title="link8" id="link8"  onclick="openExternal('hplink8', false);"><img class="img_slide slide" id="slide8" alt="slide8" src="css/images/img8.jpg"
+				/></a><a title="link9" id="link9"  onclick="openExternal('hplink9', false);"><img class="img_slide slide" id="slide9" alt="slide9" src="css/images/img9.jpg"
+				/></a><a title="link10" id="link10"  onclick="openExternal('hplink10', false);"><img class="img_slide slide" id="slide10" alt="slide10" src="css/images/img10.jpg" 
+				/></a>
+				<input type="hidden" id="hplink1" value=""/> 
+				<input type="hidden" id="hplink2" value=""/>
+				<input type="hidden" id="hplink3" value=""/>
+				<input type="hidden" id="hplink4" value=""/>
+				<input type="hidden" id="hplink5" value=""/>
+				<input type="hidden" id="hplink6" value=""/>
+				<input type="hidden" id="hplink7" value=""/>
+				<input type="hidden" id="hplink8" value=""/>
+				<input type="hidden" id="hplink9" value="http://bomo.b2k.hk"/>
+				<input type="hidden" id="hplink10" value="http://www.uniforce.net"/>
+				<input type="hidden" id="update_failed" value="false" />
+				<input type="hidden" id="last_count" value="1" />
+				<input type="hidden" id="updated_serial_once" value="false" />
+			</div>
+	</div>
+	<div data-role="footer">
+    	 <div>12345<button type="button" data-theme="a" id="page_create">Create your promotion</button></div>
+  	</div><!-- /footer -->
+</div> <!-- Page ends here -->
+</body>
+</html>

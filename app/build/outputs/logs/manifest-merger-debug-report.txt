@@ -1,0 +1,93 @@
+-- Merging decision tree log ---
+manifest
+ADDED from C:\Work\Bomo\app\src\main\AndroidManifest.xml:1:1-35:12
+INJECTED from C:\Work\Bomo\app\src\main\AndroidManifest.xml:1:1-35:12
+INJECTED from C:\Work\Bomo\app\src\main\AndroidManifest.xml:1:1-35:12
+INJECTED from C:\Work\Bomo\app\src\main\AndroidManifest.xml:1:1-35:12
+INJECTED from C:\Work\Bomo\app\src\main\AndroidManifest.xml:1:1-35:12
+INJECTED from C:\Work\Bomo\app\src\main\AndroidManifest.xml:1:1-35:12
+INJECTED from C:\Work\Bomo\app\src\main\AndroidManifest.xml:1:1-35:12
+	package
+		ADDED from C:\Work\Bomo\app\src\main\AndroidManifest.xml:2:5-32
+		INJECTED from C:\Work\Bomo\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Work\Bomo\app\src\main\AndroidManifest.xml
+	android:versionName
+		ADDED from C:\Work\Bomo\app\src\main\AndroidManifest.xml:4:5-30
+		INJECTED from C:\Work\Bomo\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Work\Bomo\app\src\main\AndroidManifest.xml
+	xmlns:android
+		ADDED from C:\Work\Bomo\app\src\main\AndroidManifest.xml:1:11-69
+	android:versionCode
+		ADDED from C:\Work\Bomo\app\src\main\AndroidManifest.xml:3:5-28
+		INJECTED from C:\Work\Bomo\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Work\Bomo\app\src\main\AndroidManifest.xml
+supports-screens
+ADDED from C:\Work\Bomo\app\src\main\AndroidManifest.xml:6:5-11:39
+	android:largeScreens
+		ADDED from C:\Work\Bomo\app\src\main\AndroidManifest.xml:8:9-36
+	android:smallScreens
+		ADDED from C:\Work\Bomo\app\src\main\AndroidManifest.xml:11:9-36
+	android:normalScreens
+		ADDED from C:\Work\Bomo\app\src\main\AndroidManifest.xml:9:9-37
+	android:resizeable
+		ADDED from C:\Work\Bomo\app\src\main\AndroidManifest.xml:10:9-34
+	android:anyDensity
+		ADDED from C:\Work\Bomo\app\src\main\AndroidManifest.xml:7:9-34
+uses-permission#android.permission.INTERNET
+ADDED from C:\Work\Bomo\app\src\main\AndroidManifest.xml:13:5-67
+	android:name
+		ADDED from C:\Work\Bomo\app\src\main\AndroidManifest.xml:13:22-64
+uses-permission#android.permission.WRITE_EXTERNAL_STORAGE
+ADDED from C:\Work\Bomo\app\src\main\AndroidManifest.xml:14:5-81
+	android:name
+		ADDED from C:\Work\Bomo\app\src\main\AndroidManifest.xml:14:22-78
+uses-permission#android.permission.READ_EXTERNAL_STORAGE
+ADDED from C:\Work\Bomo\app\src\main\AndroidManifest.xml:15:5-80
+	android:name
+		ADDED from C:\Work\Bomo\app\src\main\AndroidManifest.xml:15:22-77
+uses-permission#android.permission.ACCESS_NETWORK_STATE
+ADDED from C:\Work\Bomo\app\src\main\AndroidManifest.xml:16:5-79
+	android:name
+		ADDED from C:\Work\Bomo\app\src\main\AndroidManifest.xml:16:22-76
+application
+ADDED from C:\Work\Bomo\app\src\main\AndroidManifest.xml:18:5-33:19
+	android:label
+		ADDED from C:\Work\Bomo\app\src\main\AndroidManifest.xml:20:9-41
+	android:icon
+		ADDED from C:\Work\Bomo\app\src\main\AndroidManifest.xml:19:9-45
+	android:theme
+		ADDED from C:\Work\Bomo\app\src\main\AndroidManifest.xml:21:9-40
+activity#com.uniforce.bomo.BomoMainActivity
+ADDED from C:\Work\Bomo\app\src\main\AndroidManifest.xml:22:9-32:20
+	android:label
+		ADDED from C:\Work\Bomo\app\src\main\AndroidManifest.xml:25:13-61
+	android:launchMode
+		ADDED from C:\Work\Bomo\app\src\main\AndroidManifest.xml:26:13-43
+	android:configChanges
+		ADDED from C:\Work\Bomo\app\src\main\AndroidManifest.xml:24:13-72
+	android:name
+		ADDED from C:\Work\Bomo\app\src\main\AndroidManifest.xml:23:13-45
+intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
+ADDED from C:\Work\Bomo\app\src\main\AndroidManifest.xml:27:13-31:29
+action#android.intent.action.MAIN
+ADDED from C:\Work\Bomo\app\src\main\AndroidManifest.xml:28:17-69
+	android:name
+		ADDED from C:\Work\Bomo\app\src\main\AndroidManifest.xml:28:25-66
+category#android.intent.category.LAUNCHER
+ADDED from C:\Work\Bomo\app\src\main\AndroidManifest.xml:30:17-77
+	android:name
+		ADDED from C:\Work\Bomo\app\src\main\AndroidManifest.xml:30:27-74
+uses-sdk
+INJECTED from C:\Work\Bomo\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from C:\Work\Bomo\app\src\main\AndroidManifest.xml
+INJECTED from C:\Work\Bomo\app\src\main\AndroidManifest.xml
+INJECTED from C:\Work\Bomo\app\src\main\AndroidManifest.xml
+INJECTED from C:\Work\Bomo\app\src\main\AndroidManifest.xml
+	android:targetSdkVersion
+		INJECTED from C:\Work\Bomo\app\src\main\AndroidManifest.xml
+		ADDED from C:\Work\Bomo\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Work\Bomo\app\src\main\AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from C:\Work\Bomo\app\src\main\AndroidManifest.xml
+		ADDED from C:\Work\Bomo\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Work\Bomo\app\src\main\AndroidManifest.xml

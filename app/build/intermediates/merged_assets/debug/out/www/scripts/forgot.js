@@ -1,0 +1,38 @@
+$('#page_forgot_submit').live('click',function(){
+  var name_email = $('#page_forgot_name_or_email').val();
+  if (!name_email) { alert('Please enter your user name or email address.'); return false; }
+  
+  // BEGIN: drupal services user register (warning: don't use https if you don't have ssl setup)
+  $.ajax({
+      url: "http://bomo.b2k.hk/?q=my_services/user/retrieve.json",
+      type: 'post',
+      data: 'name=' + encodeURIComponent(name_email) + '&mail=' + encodeURIComponent(name_email),
+      dataType: 'json',
+      error: function(XMLHttpRequest, textStatus, errorThrown) {
+        //alert('page_forgot_submit - failed to login');
+		alert('Retrieve account information failed, please contact with administrator at app.team@uniforce.net');
+        console.log(JSON.stringify(XMLHttpRequest));
+        console.log(JSON.stringify(textStatus));
+        console.log(JSON.stringify(errorThrown));
+		alert(JSON.stringify(XMLHttpRequest));
+		alert(JSON.stringify(textStatus));
+        alert(JSON.stringify(errorThrown));
+      },
+      success: function (data) {
+	  //alert('page_forgot_submit - success to login');
+       //$.mobile.changePage("index3.html", "slideup");
+	   alert('Further instructions has been sent to your email address.');
+	   window.location.href="login.html";
+      }
+  });
+  // END: drupal services user register
+  return false;
+});
+
+$('#page_forgot_submit').live('click',function(){
+	navigator.app.loadUrl('http://bomo.b2k.hk/user/password', { openExternal:true });
+}
+
+$('#page_back').live('click',function(){
+	window.location.href="index2.html";
+});

@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+
+	<title>Bomo</title>
+	
+	<script>document.documentElement.className = 'js';</script>
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.5">
+	<!-- Force latest IE rendering engine & Chrome Frame -->
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<!-- Make IE recognise HTML5 elements for styling -->
+	<!--[if lte IE 8]><script src="js/html5.js"></script><![endif]-->
+	
+	<link rel="stylesheet" href="css/jquery.mobile-1.0a2.min.css" />
+	
+	<script src="js/cordova-2.1.0.js"></script>
+	<script src="js/jquery-1.8.2.min.js"></script>
+	<script src="js/jquery.mobile-1.0a2.min.js"></script>
+
+	<script type="text/javascript">
+	var pictureSource;   // picture source
+    var destinationType; // sets the format of returned value 
+	var photoid=window.localStorage.getItem("photoid");
+    var photoData=null;
+
+    // Wait for PhoneGap to connect with the device
+    //
+    document.addEventListener("deviceready",onDeviceReady,false);
+
+    // PhoneGap is ready to be used!
+    //
+    function onDeviceReady() {
+     pictureSource=navigator.camera.PictureSourceType;
+     destinationType=navigator.camera.DestinationType;
+    }
+
+	function getPhoto(source) {
+        //alert("Entered sd card");
+        // Retrieve image file location from specified source
+        navigator.camera.getPicture(onPhotoDataSuccess2, onFail, { quality: 50, 
+                                    destinationType: destinationType.FILE_URI,
+                                    sourceType: source,
+				    
+	 });
+    }
+	
+    // Called when a photo is successfully retrieved
+    //
+    function onPhotoDataSuccess(imageData) {
+    // Get image handle
+    //
+    var smallImage = document.getElementById('photos');
+
+    // Unhide image elements
+    //
+    smallImage.style.display = 'block';
+
+    // Show the captured photo
+    // The inline CSS rules are used to resize the image
+    //
+    smallImage.src = "data:image/jpeg;base64," + imageData;
+    //console.log('Width: '+smallImage.width+', Height: '+smallImage.height);
+    smallImage.load(function() {
+	var photo_height = $('#photos').height();
+  	var photo_width  = $('#photos').width();
+  	alert('Width: '+photo_width+', Height: '+photo_height);
+    	if (!this.complete || typeof this.naturalWidth == "undefined" || this.naturalWidth == 0) {
+    	    alert('broken image!');
+    	}
+    	else {    
+        	var content = getBase64Image(smallImage[0]);
+        	alert(content);
+    	}
+    });
+	
+	// Upload the photo to Bomo backend server first
+	assignPhoto(imageData);
+   }
+   
+   function onPhotoDataSuccess2(imageData) {
+         console.log(imageData);
+
+        // Get image handle
+        var smallImage = document.getElementById('photos');
+
+        // Unhide image elements
+        //
+        smallImage.style.display = 'block';
+
+        // Show the captured photo
+        // The inline CSS rules are used to resize the image
+        //
+        smallImage.src = "data:image/jpeg;base64," + imageData;
+	smallImage.load(function() {
+	var photo_height = $('#photos').height();
+  	var photo_width  = $('#photos').width();
+  	alert('Width: '+photo_width+', Height: '+photo_height);
+    	if (!this.complete || typeof this.naturalWidth == "undefined" || this.naturalWidth == 0) {
+    	    alert('broken image!');
+    	}
+    	else {    
+        	var content = getBase64Image(smallImage[0]);
+        	alert(content);
+    	}
+    	});
+	//console.log('Width: '+smallImage.width+', Height: '+smallImage.height);
+        //alert(imageData);
+	/*
+	var content1 = getBase64Image(smallImage);
+	console.log("Content"+content1);
+	alert("Content"+content1);
+        photoData = imageData;
+        window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, gotFS, fail);
+	*/
+
+	    assignPhoto(imageData);
+    }
+
+    function gotFS(fileSystem) {
+        fileSystem.root.getFile("/sdcard/external_sd/"+photoid+".jpg", null, gotFileEntry, fail);
+    }
+
+    function gotFileWriter(writer) {
+        writer.onwrite = function(evt) {
+            alert("write success");
+        };
+        writer.write(photoData);
+    }
+
+   // Called when a photo is successfully retrieved
+   //
+   function onPhotoFileSuccess(imageData) {
+    // Get image handle
+    console.log(JSON.stringify(imageData));
+
+    // Get image handle
+    //
+    var smallImage = document.getElementById('photos');
+
+    // Unhide image elements
+    //
+    smallImage.style.display = 'block';
+
+    // Show the captured photo
+    // The inline CSS rules are used to resize the image
+    //
+    smallImage.src = imageData;
+	
+	// Upload the photo to Bomo backend server first
+	assignPhoto(imageData);
+  }
+
+  // Called when a photo is successfully retrieved
+  //
+  function onPhotoURISuccess(imageURI) {
+    // Uncomment to view the image file URI 
+    // console.log(imageURI);
+
+    // Get image handle
+    //
+    var largeImage = document.getElementById('photos');
+
+    // Unhide image elements
+    //
+    largeImage.style.display = 'block';
+
+    // Show the captured photo
+    // The inline CSS rules are used to resize the image
+    //
+    largeImage.src = imageURI;
+	
+	assignPhoto(imageURI);
+  }
+
+  // A button will call this function
+  //
+  function capturePhotoWithData() {
+	//alert('Capture Photo Data Test');
+    // Take picture using device camera and retrieve image as base64-encoded string
+    navigator.camera.getPicture(onPhotoDataSuccess, onFail, { quality: 50 });
+  }
+
+  function capturePhotoWithFile() {
+    //alert('Capture Photo File Test');
+    navigator.camera.getPicture(onPhotoFileSuccess, onFail, 
+	{ quality: 50, 
+	  destinationType: Camera.DestinationType.FILE_URI,
+	  
+	});
+  }
+
+  // A button will call this function
+  //
+  function getPhoto(source) {
+    // Retrieve image file location from specified source
+    navigator.camera.getPicture(onPhotoURISuccess, onFail, { quality: 50, 
+    destinationType: destinationType.FILE_URI,
+    sourceType: source });
+  }
+  
+  function onFail(){
+  }
+  
+  function assignPhoto(imageURI) {
+	//alert('Image: '+imageURI);
+	document.getElementById('promotion_node_photo').value=imageURI;
+     	var gotFileEntry = function(fileEntry) { 
+    		console.log("got image file entry: " +  fileEntry.fullPath); 
+		document.getElementById('promotion_node_photo_full_path').value=fileEntry.fullPath;
+		/*
+    		fileEntry.file( function(file) {
+        		var reader = new FileReader();
+        			reader.onloadend = function(evt) {
+            				console.log("Read complete!");
+					//var temp_arr=evt.target.result.split("base64,/");
+					//document.getElementById("promotion_node_photo_base64").value=temp_arr[1];
+					//alert(document.getElementById("promotion_node_photo_base64").value);
+        			};
+        			reader.readAsDataURL(file);
+    		}, failFile);
+		*/
+	};
+	window.resolveLocalFileSystemURI(imageURI, gotFileEntry, failSystem); 
+	
+	
+  }
+
+  function win(r) {
+    console.log("Code = " + r.responseCode);
+    console.log("Response = " + r.response);
+    console.log("Sent = " + r.bytesSent);
+  }
+
+  function fail(error) {
+    alert("An error has occurred: Code = " = error.code);
+	console.log(error.code);
+  }
+
+  function failFile(error) {
+    alert("An error has occurred: Code = " = error.code);
+	console.log(error.code);
+  }
+
+  function failSystem(error) {
+    alert("An error has occurred: Code = " = error.code);
+	console.log(error.code);
+  }
+
+  function getBase64Image(imgage) {
+        var canvas = document.createElement("canvas");
+        canvas.width = imgage.width;
+        canvas.height = imgage.height;
+     
+        var ctx = canvas.getContext("2d");
+        ctx.drawImage(imgage, 0, 0);
+     
+        var dataURL = canvas.toDataURL("image/png");
+        return dataURL.replace("/^data:image/(png|jpg);base64,/", "");
+    }
+
+    
+  </script>
+	
+	<!--[if lte IE 8]><link rel="stylesheet" type="text/css" href="css/template.ie.css" /><![endif]-->
+	<!--[if IE 8]><link rel="stylesheet" type="text/css" href="css/template.ie8.css" /><![endif]-->
+	<!--[if IE 7]><link rel="stylesheet" type="text/css" href="css/template.ie7.css" /><![endif]-->
+
+	</head>
+
+<body>
+<!-- Page starts here -->
+<div data-role="page" data-theme="a" id="promotion_node_create">
+
+ <script type="text/javascript" charset="utf-8" src="scripts/node_create.js"></script>
+ <script type="text/javascript" charset="utf-8" src="scripts/drupal.js"></script>
+ <script type="text/javascript" charset="utf-8" src="scripts/jquery.base64.js"></script>
+  
+  <div data-role="header">
+    <h1>Create Promotion</h1>
+  </div><!-- /header -->
+ 
+  <div data-role="content" class='content'>
+    <div>
+      <label for="promotion_node_title">Promotion Title</label>
+      <input type="text" id="promotion_node_title" />
+    </div>
+    <div>
+      <label for="promotion_node_body">Promotion Body</label>
+      <textarea id="promotion_node_body"></textarea>
+    </div>
+	<div>
+      <label for="promotion_node_link">Promotion Link</label>
+      <input type="text" id="promotion_node_link" />
+    </div>
+	<div data-role="fieldcontain">
+	  <label for="promotion_node_image">Promotion Image</label>
+	  <br/>
+	  <label for="promotion_node_image_size">* Min.: 480 x 800, Max.: 1952 x 3264</label>
+        <button onclick="javascript: getPhoto(pictureSource.PHOTOLIBRARY);" data-theme="a">Select Image from SD Card</button>
+		<button onclick="javascript: capturePhotoWithFile();" data-theme="a">Capture Photo</button>
+		<img style="display:none;overflow:auto;" id="photos" src="" />
+		<input type="hidden" name="promotion_node_photo" id="promotion_node_photo" value=""/>
+		<input type="hidden" name="promotion_node_photo_full_path" id="promotion_node_photo_full_path" value=""/>
+    </div>
+    <fieldset>
+      <div><button type="button" data-theme="a" id="promotion_node_create_submit">Submit</button></div>
+    </fieldset>
+  </div><!-- /content -->
+
+  <div data-role="footer">
+    &nbsp;
+  </div><!-- /footer -->
+
+</div><!-- /page -->
+</body>
+</html>

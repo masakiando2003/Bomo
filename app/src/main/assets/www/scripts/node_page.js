@@ -1,0 +1,76 @@
+var uid=getURLParameters('uid');
+console.log("UID: "+uid);
+var nid;
+$('#page_node_pages').live('pageshow',function(){  
+  try {
+    $.ajax({
+      url: "http://bomo.b2k.hk/?q=vendor_promo_page_view",
+      type: 'GET',
+      //data: 'uid='+encodeURIComponent(nid),
+      dataType: 'json',
+      error: function (XMLHttpRequest, textStatus, errorThrown) {
+        //alert('page_node_pages - failed to retrieve pages');
+        console.log(JSON.stringify(XMLHttpRequest));
+        console.log(JSON.stringify(textStatus));
+        console.log(JSON.stringify(errorThrown));
+	alert(JSON.stringify(XMLHttpRequest));
+        alert(JSON.stringify(textStatus));
+        alert(JSON.stringify(errorThrown));
+      },
+      success: function (data) {
+	$("#load_promo_list").hide();
+        $("#page_node_pages_list").html("");
+        $.each(data.nodes,function (node_index,node_value) {
+          console.log(JSON.stringify(node_value));
+	  if(node_value.node.uid==uid){
+          	$("#page_node_pages_list").append($("<li></li>",{"html":"<a href='#page_node_view' id='" + node_value.node.Nid + "' class='page_node_pages_list_title'>" + node_value.node.title + "</a>"}));
+	  }
+        });
+        $("#page_node_pages_list").listview("destroy").listview();
+      }
+    });
+  }
+  catch (error) { alert("page_node_pages - " + error); }
+});
+
+
+$('a.page_node_pages_list_title').live("click",function(){
+  nid = $(this).attr('id'); // set the global nid to the node that was just clicked
+  window.location.href="view_promo_detail.html?nid="+encodeURI(nid)+"&uid="+encodeURI(uid);
+});
+
+function getURLParameters(paramName) 
+{
+    var sURL = window.document.URL.toString();  
+    if (sURL.indexOf("?") > 0)
+    {
+       var arrParams = sURL.split("?");         
+       var arrURLParams = arrParams[1].split("&");      
+       var arrParamNames = new Array(arrURLParams.length);
+       var arrParamValues = new Array(arrURLParams.length);     
+       var i = 0;
+       for (i=0;i<arrURLParams.length;i++)
+       {
+        var sParam =  arrURLParams[i].split("=");
+        arrParamNames[i] = sParam[0];
+        if (sParam[1] != "")
+            arrParamValues[i] = unescape(sParam[1]);
+        else
+            arrParamValues[i] = "No Value";
+       }
+
+       for (i=0;i<arrURLParams.length;i++)
+       {
+                if(arrParamNames[i] == paramName){
+            //alert("Param:"+arrParamValues[i]);
+                return arrParamValues[i];
+             }
+       }
+       return "No Parameters Found";
+    }
+}
+
+function BackToDashboard()
+{
+    window.location.href="dashboard.html";
+}

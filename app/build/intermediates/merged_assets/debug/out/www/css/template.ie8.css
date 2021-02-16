@@ -1,0 +1,30 @@
+/* horizontal
+    
+   Simulate a bunch of blocks pushed against each other horizontally
+   by using in-flow layout to create a horizontal effect. Because
+   they're in the flow, children must have no space between them in
+   the html.
+   
+   Uses a technique for getting inline-block behaviour in IE, explained well here:
+   http://blog.mozilla.com/webdev/2009/02/20/cross-browser-inline-block/
+*/
+
+.horizontal > li > a {
+	height: auto;
+	vertical-align: top;
+}
+
+.js .tip {
+	background-image: url('../images/bg/rgba_0_0_0_80.png');
+	background-repeat: repeat;
+}
+
+.dropdown > *,
+.popdown > *,
+.layer > *,
+.tip > *,
+.tab > * {
+  /* IE8 needs to inherit filters from its parent in order
+     to make opacity work. */
+  filter: inherit;
+}

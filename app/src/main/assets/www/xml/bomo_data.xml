@@ -1,0 +1,39 @@
+<?xml version="1.1" encoding="utf-8"?>
+<bomo_data>
+	<bomo>
+	<name>Bomo</name>
+	</bomo>
+
+	<bomo>
+	<name>Last:</name>
+	</bomo>
+	
+	<bomo>
+	<name>Bomo - Checking for update</name>
+	</bomo>
+	
+	<bomo>
+	<name>Please ensure your internet connection is working</name>
+	</bomo>
+	
+	<bomo>
+	<name>Bomo - Updated number of contents:</name>
+	</bomo>
+	
+	<bomo>
+	<name>Please check the latest content</name>
+	</bomo>
+	
+	<bomo>
+	<name>Bomo - This is the latest content, please try to update later</name>
+	</bomo>
+	
+	<bomo>
+	<name>Bomo - SD Card not found / not ready</name>
+	</bomo>
+	
+	<bomo>
+	<name>Please ensure your SD card is mount in your phone</name>
+	</bomo>
+	
+</bomo_data>
