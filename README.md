@@ -13,6 +13,7 @@ Backend:
 Drupal 7+
 
 *The hyperlink in the file below that links to the backend website is unavailable now.
+
 app/src/main/assets/www/scripts/check_connection.js
 
 Setup Process:
