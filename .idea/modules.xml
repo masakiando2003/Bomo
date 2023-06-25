@@ -3,10 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Bomo.iml" filepath="$PROJECT_DIR$/Bomo.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/Bomo.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/Bomo.app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/Bomo.app.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/Bomo.app.androidTest.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/Bomo.app.main.iml" filepath="$PROJECT_DIR$/.idea/modules/app/Bomo.app.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/Bomo.app.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/Bomo.app.unitTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
 </project>
