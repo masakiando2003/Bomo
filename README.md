@@ -21,3 +21,6 @@ Setup Process:
 2. Use Android Studio to open / import this project
 3. "Build"->"Make Project"
 4. Run on Android Virtal Device or Android OS Smart Phone
+
+*2023-06-26 Update:
+Fix gradle package problems and disabled notification
