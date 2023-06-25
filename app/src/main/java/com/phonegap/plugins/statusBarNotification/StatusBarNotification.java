@@ -99,8 +99,10 @@ public class StatusBarNotification extends Plugin {
         context = cordova.getActivity().getApplicationContext();
         mNotificationManager = (NotificationManager) context.getSystemService(ns);
 
+        /*
         Notification noti = StatusNotificationIntent.buildNotification(context, tag, contentTitle, contentText);
         mNotificationManager.notify(tag.hashCode(), noti);
+         */
     }
 
     /**

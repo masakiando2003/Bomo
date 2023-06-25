@@ -5,67 +5,72 @@
 5    android:versionName="1.0" >
 6
 7    <uses-sdk
-8        android:minSdkVersion="8"
-8-->C:\Work\Bomo\app\src\main\AndroidManifest.xml
-9        android:targetSdkVersion="15" />
-9-->C:\Work\Bomo\app\src\main\AndroidManifest.xml
+8        android:minSdkVersion="14"
+8-->C:\work\Bomo\app\src\main\AndroidManifest.xml
+9        android:targetSdkVersion="31" />
+9-->C:\work\Bomo\app\src\main\AndroidManifest.xml
 10
 11    <supports-screens
-11-->C:\Work\Bomo\app\src\main\AndroidManifest.xml:6:5-11:39
+11-->C:\work\Bomo\app\src\main\AndroidManifest.xml:5:5-10:39
 12        android:anyDensity="true"
-12-->C:\Work\Bomo\app\src\main\AndroidManifest.xml:7:9-34
+12-->C:\work\Bomo\app\src\main\AndroidManifest.xml:6:9-34
 13        android:largeScreens="true"
-13-->C:\Work\Bomo\app\src\main\AndroidManifest.xml:8:9-36
+13-->C:\work\Bomo\app\src\main\AndroidManifest.xml:7:9-36
 14        android:normalScreens="true"
-14-->C:\Work\Bomo\app\src\main\AndroidManifest.xml:9:9-37
+14-->C:\work\Bomo\app\src\main\AndroidManifest.xml:8:9-37
 15        android:resizeable="true"
-15-->C:\Work\Bomo\app\src\main\AndroidManifest.xml:10:9-34
+15-->C:\work\Bomo\app\src\main\AndroidManifest.xml:9:9-34
 16        android:smallScreens="true" />
-16-->C:\Work\Bomo\app\src\main\AndroidManifest.xml:11:9-36
+16-->C:\work\Bomo\app\src\main\AndroidManifest.xml:10:9-36
 17
 18    <uses-permission android:name="android.permission.INTERNET" />
-18-->C:\Work\Bomo\app\src\main\AndroidManifest.xml:13:5-67
-18-->C:\Work\Bomo\app\src\main\AndroidManifest.xml:13:22-64
+18-->C:\work\Bomo\app\src\main\AndroidManifest.xml:12:5-67
+18-->C:\work\Bomo\app\src\main\AndroidManifest.xml:12:22-64
 19    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-19-->C:\Work\Bomo\app\src\main\AndroidManifest.xml:14:5-81
-19-->C:\Work\Bomo\app\src\main\AndroidManifest.xml:14:22-78
+19-->C:\work\Bomo\app\src\main\AndroidManifest.xml:13:5-81
+19-->C:\work\Bomo\app\src\main\AndroidManifest.xml:13:22-78
 20    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-20-->C:\Work\Bomo\app\src\main\AndroidManifest.xml:15:5-80
-20-->C:\Work\Bomo\app\src\main\AndroidManifest.xml:15:22-77
+20-->C:\work\Bomo\app\src\main\AndroidManifest.xml:14:5-80
+20-->C:\work\Bomo\app\src\main\AndroidManifest.xml:14:22-77
 21    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-21-->C:\Work\Bomo\app\src\main\AndroidManifest.xml:16:5-79
-21-->C:\Work\Bomo\app\src\main\AndroidManifest.xml:16:22-76
+21-->C:\work\Bomo\app\src\main\AndroidManifest.xml:15:5-79
+21-->C:\work\Bomo\app\src\main\AndroidManifest.xml:15:22-76
 22
 23    <application
-23-->C:\Work\Bomo\app\src\main\AndroidManifest.xml:18:5-33:19
-24        android:debuggable="true"
-25        android:icon="@drawable/ic_launcher"
-25-->C:\Work\Bomo\app\src\main\AndroidManifest.xml:19:9-45
-26        android:label="@string/app_name"
-26-->C:\Work\Bomo\app\src\main\AndroidManifest.xml:20:9-41
-27        android:theme="@style/AppTheme" >
-27-->C:\Work\Bomo\app\src\main\AndroidManifest.xml:21:9-40
-28        <activity
-28-->C:\Work\Bomo\app\src\main\AndroidManifest.xml:22:9-32:20
-29            android:name="com.uniforce.bomo.BomoMainActivity"
-29-->C:\Work\Bomo\app\src\main\AndroidManifest.xml:23:13-45
-30            android:configChanges="keyboard|keyboardHidden|orientation"
-30-->C:\Work\Bomo\app\src\main\AndroidManifest.xml:24:13-72
-31            android:label="@string/title_activity_bomo_main"
-31-->C:\Work\Bomo\app\src\main\AndroidManifest.xml:25:13-61
-32            android:launchMode="singleTop" >
-32-->C:\Work\Bomo\app\src\main\AndroidManifest.xml:26:13-43
-33            <intent-filter>
-33-->C:\Work\Bomo\app\src\main\AndroidManifest.xml:27:13-31:29
-34                <action android:name="android.intent.action.MAIN" />
-34-->C:\Work\Bomo\app\src\main\AndroidManifest.xml:28:17-69
-34-->C:\Work\Bomo\app\src\main\AndroidManifest.xml:28:25-66
-35
-36                <category android:name="android.intent.category.LAUNCHER" />
-36-->C:\Work\Bomo\app\src\main\AndroidManifest.xml:30:17-77
-36-->C:\Work\Bomo\app\src\main\AndroidManifest.xml:30:27-74
-37            </intent-filter>
-38        </activity>
-39    </application>
-40
-41</manifest>
+23-->C:\work\Bomo\app\src\main\AndroidManifest.xml:17:5-33:19
+24        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+24-->[androidx.core:core:1.0.0] C:\Users\masak\.gradle\caches\transforms-3\d254ac347efabaf6ff19636f24b1b6fc\transformed\core-1.0.0\AndroidManifest.xml:22:18-86
+25        android:debuggable="true"
+26        android:icon="@drawable/ic_launcher"
+26-->C:\work\Bomo\app\src\main\AndroidManifest.xml:18:9-45
+27        android:label="@string/app_name"
+27-->C:\work\Bomo\app\src\main\AndroidManifest.xml:19:9-41
+28        android:testOnly="true"
+29        android:theme="@style/AppTheme" >
+29-->C:\work\Bomo\app\src\main\AndroidManifest.xml:20:9-40
+30        <activity
+30-->C:\work\Bomo\app\src\main\AndroidManifest.xml:21:9-32:20
+31            android:name="com.uniforce.bomo.BomoMainActivity"
+31-->C:\work\Bomo\app\src\main\AndroidManifest.xml:22:13-45
+32            android:configChanges="keyboard|keyboardHidden|orientation"
+32-->C:\work\Bomo\app\src\main\AndroidManifest.xml:23:13-72
+33            android:exported="true"
+33-->C:\work\Bomo\app\src\main\AndroidManifest.xml:26:13-36
+34            android:label="@string/title_activity_bomo_main"
+34-->C:\work\Bomo\app\src\main\AndroidManifest.xml:24:13-61
+35            android:launchMode="singleTop" >
+35-->C:\work\Bomo\app\src\main\AndroidManifest.xml:25:13-43
+36            <intent-filter>
+36-->C:\work\Bomo\app\src\main\AndroidManifest.xml:27:13-31:29
+37                <action android:name="android.intent.action.MAIN" />
+37-->C:\work\Bomo\app\src\main\AndroidManifest.xml:28:17-69
+37-->C:\work\Bomo\app\src\main\AndroidManifest.xml:28:25-66
+38
+39                <category android:name="android.intent.category.LAUNCHER" />
+39-->C:\work\Bomo\app\src\main\AndroidManifest.xml:30:17-77
+39-->C:\work\Bomo\app\src\main\AndroidManifest.xml:30:27-74
+40            </intent-filter>
+41        </activity>
+42    </application>
+43
+44</manifest>

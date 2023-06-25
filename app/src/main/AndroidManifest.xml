@@ -1,5 +1,4 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.uniforce.bomo"
     android:versionCode="1"
     android:versionName="1.0" >
 
@@ -23,7 +22,8 @@
             android:name=".BomoMainActivity"
             android:configChanges="keyboard|keyboardHidden|orientation"
             android:label="@string/title_activity_bomo_main"
-            android:launchMode="singleTop" >
+            android:launchMode="singleTop"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
