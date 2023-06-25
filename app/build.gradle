@@ -1,13 +1,12 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 8
-    buildToolsVersion "29.0.2"
+    compileSdkVersion 33
 
     defaultConfig {
         applicationId "com.uniforce.bomo"
         minSdkVersion 8
-        targetSdkVersion 15
+        targetSdkVersion 33
         compileOptions {
             sourceCompatibility JavaVersion.VERSION_1_5
             targetCompatibility JavaVersion.VERSION_1_5
@@ -20,10 +19,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
     }
+    namespace 'com.uniforce.bomo'
 }
 
 dependencies {
-    compile 'com.android.support:support-v4:18.+'
-    compile files('libs/cordova-2.1.0.jar')
-    compile files('libs/Pushwoosh.jar')
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation files('libs/cordova-2.1.0.jar')
+    implementation files('libs/Pushwoosh.jar')
 }
