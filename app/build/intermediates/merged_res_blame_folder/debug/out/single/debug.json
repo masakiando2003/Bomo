@@ -1,0 +1,62 @@
+[
+    {
+        "merged": "com.uniforce.bomo.app-merged_res-8:/drawable-mdpi_notification.png.flat",
+        "source": "com.uniforce.bomo.app-main-10:/drawable-mdpi/notification.png"
+    },
+    {
+        "merged": "com.uniforce.bomo.app-merged_res-8:/drawable-ldpi_ic_launcher.png.flat",
+        "source": "com.uniforce.bomo.app-main-10:/drawable-ldpi/ic_launcher.png"
+    },
+    {
+        "merged": "com.uniforce.bomo.app-merged_res-8:/layout_activity_bomo_main.xml.flat",
+        "source": "com.uniforce.bomo.app-main-10:/layout/activity_bomo_main.xml"
+    },
+    {
+        "merged": "com.uniforce.bomo.app-merged_res-8:/drawable-hdpi_ic_launcher.png.flat",
+        "source": "com.uniforce.bomo.app-main-10:/drawable-hdpi/ic_launcher.png"
+    },
+    {
+        "merged": "com.uniforce.bomo.app-merged_res-8:/drawable-xhdpi_ic_launcher.png.flat",
+        "source": "com.uniforce.bomo.app-main-10:/drawable-xhdpi/ic_launcher.png"
+    },
+    {
+        "merged": "com.uniforce.bomo.app-merged_res-8:/drawable-mdpi_ic_launcher.png.flat",
+        "source": "com.uniforce.bomo.app-main-10:/drawable-mdpi/ic_launcher.png"
+    },
+    {
+        "merged": "com.uniforce.bomo.app-merged_res-8:/menu_activity_bomo_main.xml.flat",
+        "source": "com.uniforce.bomo.app-main-10:/menu/activity_bomo_main.xml"
+    },
+    {
+        "merged": "com.uniforce.bomo.app-merged_res-8:/drawable-xhdpi_ic_action_search.png.flat",
+        "source": "com.uniforce.bomo.app-main-10:/drawable-xhdpi/ic_action_search.png"
+    },
+    {
+        "merged": "com.uniforce.bomo.app-merged_res-8:/drawable-hdpi_ic_action_search.png.flat",
+        "source": "com.uniforce.bomo.app-main-10:/drawable-hdpi/ic_action_search.png"
+    },
+    {
+        "merged": "com.uniforce.bomo.app-merged_res-8:/drawable-hdpi_notification.png.flat",
+        "source": "com.uniforce.bomo.app-main-10:/drawable-hdpi/notification.png"
+    },
+    {
+        "merged": "com.uniforce.bomo.app-merged_res-8:/xml_config.xml.flat",
+        "source": "com.uniforce.bomo.app-main-10:/xml/config.xml"
+    },
+    {
+        "merged": "com.uniforce.bomo.app-merged_res-8:/layout_activity_main.xml.flat",
+        "source": "com.uniforce.bomo.app-main-10:/layout/activity_main.xml"
+    },
+    {
+        "merged": "com.uniforce.bomo.app-merged_res-8:/drawable-xhdpi_notification.png.flat",
+        "source": "com.uniforce.bomo.app-main-10:/drawable-xhdpi/notification.png"
+    },
+    {
+        "merged": "com.uniforce.bomo.app-merged_res-8:/menu_activity_main.xml.flat",
+        "source": "com.uniforce.bomo.app-main-10:/menu/activity_main.xml"
+    },
+    {
+        "merged": "com.uniforce.bomo.app-merged_res-8:/drawable-mdpi_ic_action_search.png.flat",
+        "source": "com.uniforce.bomo.app-main-10:/drawable-mdpi/ic_action_search.png"
+    }
+]
